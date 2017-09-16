@@ -30,7 +30,9 @@ WoCenter的`backend`应用目前提供了用户管理、安全管理、扩展中
   3. 模块目录下创建`Info.php`模块详情类，该类必须继承`\wocenter\core\ModularityInfo`类或其派生类。
   可参考`\wocenter\backend\modules\gii\Info`类完成创建。
 
-  4. 添加属性`public $type = 'developer';`，标记该模块类型为`开发者模块`。主要是方便模块管理系统辨识该模块。
+  4. 删除模块配置信息，一般可能存在于`main.php`、`main-local.php`这样的配置文件里。
+
+  5. 进入【模块管理】，执行`清理缓存`即可看到新的模块。接着执行安装操作即可使用。
 
 >   使用`WoCenter Gii`的模块生成器默认生成文件的路径为**开发者主题路径**，即`\wocenter\core\View::getDeveloperThemePath()`。
 

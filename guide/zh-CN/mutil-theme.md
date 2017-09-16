@@ -38,7 +38,62 @@ WoCenter的多主题模板系统是由`\wocenter\core\View`组件提供功能支
 
 以下是系统默认内置的路径映射配置，优先级从上到下（可直接阅读 **[总结](#zong-jie)** ，也可阅读下面了解详情）：
 
-1. `@app/views`：当前应用的视图目录。一般是当前应用的默认路由需要使用到，如：`site/index`操作，视图`index.php`文件通常存放于此。
+**宽松模式**（默认模式）：
+
+假设当前`app`为`backend`，当前`theme`为`adminlte`，映射配置如下：
+
+```php
+["@app/views"] => [
+  "@app/views",
+  "@backend/themes/adminlte/views",
+  "@wocenter/backend/themes/adminlte/views"
+],
+["@backend/themes/adminlte/views"] => [
+  "@backend/themes/adminlte/views",
+  "@wocenter/backend/themes/adminlte/views"
+],
+["@backend/modules"] => [
+  "@backend/modules",
+  "@backend/themes/adminlte/modules",
+  "@wocenter/backend/themes/adminlte/modules"
+],
+["@wocenter/backend/modules"] => [
+  "@backend/modules",
+  "@backend/themes/adminlte/modules",
+  "@wocenter/backend/themes/adminlte/modules"
+]
+```
+
+**严谨模式**：
+
+假设当前`app`为`backend`，当前`theme`为`adminlte`，映射配置如下：
+
+```php
+["@app/views"] => [
+  "@app/views",
+  "@backend/themes/adminlte/views",
+  "@wocenter/backend/themes/adminlte/views"
+],
+["@backend/themes/adminlte/views"] => [
+  "@backend/themes/adminlte/views",
+  "@wocenter/backend/themes/adminlte/views"
+],
+["@backend/modules"] => [
+  "@wocenter/backend/themes/adminlte/modules"， // 区别于此：严谨模式率先渲染核心视图文件，文件不存在则意味着该视图文件并非核心视图文件，则继续渲染开发者模块目录内的视图文件
+  "@backend/modules",
+  "@backend/themes/adminlte/modules"
+],
+["@wocenter/backend/modules"] => [
+  "@wocenter/backend/themes/adminlte/modules" // 区别于此：严谨模式下的核心视图文件直接渲染
+]
+```
+
+>   模式由`\wocenter\core\View::$strict`属性决定，默认为`false`，即**宽松模式**。
+
+下面以**宽松模式**为例作参数说明，**严谨模式**类似，只是优先级不一样：
+
+- `@app/views`：当前应用的视图目录。一般是当前应用的默认路由和`layouts`布局文件需要使用到，如：`site/index`操作，
+视图`index.php`文件通常存放于此， 或系统默认布局文件`main.php`存放在`@app/views/layouts`目录里。
 
    1. `@app/views`视图目录下的文件优先级最高。
 
@@ -53,7 +108,9 @@ WoCenter的多主题模板系统是由`\wocenter\core\View`组件提供功能支
 
       如果此处找不到所需的视图文件，则会抛出`ViewNotFoundException`异常信息。
 
-2. `@backend/modules`：开发者模块目录。该值可通过`\wocenter\services\ModularityService::$developerModuleNamespace`属性自定义。
+- `@backend/themes/adminlte/views`：开发者主题目录。作用和`@app/views`差不多，唯一区别在于该映射的视图只针对当前`theme`主题生效。
+
+- `@backend/modules`：开发者模块目录。该值可通过`\wocenter\services\ModularityService::$developerModuleNamespace`属性自定义。
 
    1. `@backend/modules`模块目录下的文件优先级最高。
 
@@ -71,7 +128,7 @@ WoCenter的多主题模板系统是由`\wocenter\core\View`组件提供功能支
 
       如果此处找不到所需的视图文件，则会抛出`ViewNotFoundException`异常信息。
 
-3. `@wocenter/backend/modules`：系统核心模块目录。该值可通过`\wocenter\services\ModularityService::$coreModuleNamespace`
+- `@wocenter/backend/modules`：系统核心模块目录。该值可通过`\wocenter\services\ModularityService::$coreModuleNamespace`
 属性自定义。通常该值由WoCenter开发其他应用时使用，开发者可以忽略。
 
    1. `@backend/modules`模块目录下的文件优先级最高。
@@ -92,4 +149,6 @@ WoCenter的多主题模板系统是由`\wocenter\core\View`组件提供功能支
 
 ## 总结
 
-只要在`@app`相同路径下存在和`@wocenter`相同路径下同名的文件，即可起到轻松替换系统核心视图文件的作用。
+**宽松模式**：只要在`@app`相同路径下存在和`@wocenter`相同路径下同名的文件，即可起到轻松替换系统核心视图文件的作用。
+
+**严谨模式**：即使`@app`相同路径下存在和`@wocenter`相同路径下同名的文件也不会被替换，以系统核心视图文件优先。
