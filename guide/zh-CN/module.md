@@ -9,7 +9,12 @@ WoCenter在功能粒度上划分出多个模块，每个模块职能分配清楚
 bootstrap等都已实现**自动化**。
 
 WoCenter的`backend`应用目前提供了用户管理、安全管理、扩展中心、系统管理、运营管理等多个模块，其中大部分模块都是系统的
-**核心模块**，不可被卸载。可通过`\wocenter\services\ModularityService::$coreModules`属性查看系统核心模块。
+**核心模块**，不可被卸载。可通过`\wocenter\services\ModularityService::getCoreModules()`方法查看当前应用的**核心模块**。
+
+## 优势
+
+- 自动加载模块所属的`菜单`、`权限`、`URL路由规则`、`bootstrap`等，实现模块使用**零配置**。
+- **零配置**无缝切换**开发者模块**和**系统核心模块**。
 
 ## 如何使用
 

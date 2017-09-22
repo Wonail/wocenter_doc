@@ -40,7 +40,7 @@ WoCenter的多主题模板系统是由`\wocenter\core\View`组件提供功能支
 
 **宽松模式**（默认模式）：
 
-假设当前`app`为`backend`，当前`theme`为`adminlte`，映射配置如下：
+假设当前`{app}`为`backend`，当前`{theme}`为`adminlte`，映射配置如下：
 
 ```php
 ["@app/views"] => [
@@ -66,7 +66,7 @@ WoCenter的多主题模板系统是由`\wocenter\core\View`组件提供功能支
 
 **严谨模式**：
 
-假设当前`app`为`backend`，当前`theme`为`adminlte`，映射配置如下：
+假设当前`{app}`为`backend`，当前`{theme}`为`adminlte`，映射配置如下：
 
 ```php
 ["@app/views"] => [
@@ -108,9 +108,9 @@ WoCenter的多主题模板系统是由`\wocenter\core\View`组件提供功能支
 
       如果此处找不到所需的视图文件，则会抛出`ViewNotFoundException`异常信息。
 
-- `@backend/themes/adminlte/views`：开发者主题目录。作用和`@app/views`差不多，唯一区别在于该映射的视图只针对当前`theme`主题生效。
+- `@backend/themes/adminlte/views`：开发者主题目录。作用和`@app/views`差不多，唯一区别在于该映射的视图只针对当前`{theme}`主题生效。
 
-- `@backend/modules`：开发者模块目录。该值可通过`\wocenter\services\ModularityService::$developerModuleNamespace`属性自定义。
+- `@backend/modules`：开发者模块目录。该值可通过`\wocenter\services\ModularityService::setAppModuleNamespace()`方法自定义。
 
    1. `@backend/modules`模块目录下的文件优先级最高。
 
@@ -128,8 +128,8 @@ WoCenter的多主题模板系统是由`\wocenter\core\View`组件提供功能支
 
       如果此处找不到所需的视图文件，则会抛出`ViewNotFoundException`异常信息。
 
-- `@wocenter/backend/modules`：系统核心模块目录。该值可通过`\wocenter\services\ModularityService::$coreModuleNamespace`
-属性自定义。通常该值由WoCenter开发其他应用时使用，开发者可以忽略。
+- `@wocenter/backend/modules`：系统核心模块目录。该值可通过`\wocenter\services\ModularityService::setAppModuleNamespace()`
+方法自定义。通常该值由WoCenter开发其他应用时使用，开发者可以忽略。
 
    1. `@backend/modules`模块目录下的文件优先级最高。
 
